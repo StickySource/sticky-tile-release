@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+ <properties>
+    <git.base.url>scm:git:git@github.com</git.base.url>
+    <git.branchout.name>StickySource</git.branchout.name>
+    <git.url>${git.base.url}:${git.branchout.name}/${project.artifactId}.git</git.url>
+    <project.build.sourceEncoding>US-ASCII</project.build.sourceEncoding>
+    <target.dir>target</target.dir>
+    <output.basedir>${basedir}</output.basedir>
+  </properties>
+
+  <prerequisites>
+    <maven>3.3.9</maven>
+  </prerequisites>
+
+  <build>
+    <directory>${output.basedir}/${target.dir}</directory>
+    <outputDirectory>${output.basedir}/${target.dir}/classes</outputDirectory>
+    <testOutputDirectory>${output.basedir}/${target.dir}/test-classes</testOutputDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+        <configuration>
+          <preparationGoals>clean validate bounds:update verify</preparationGoals>
+          <goals>validate deploy</goals>
+          <suppressCommitBeforeTag>false</suppressCommitBeforeTag>
+          <localCheckout>true</localCheckout>
+          <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
+        <configuration>
+          <archive>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.stickycode.plugins</groupId>
+        <artifactId>bounds-maven-plugin</artifactId>
+        <version>2.7</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>1.4.1</version>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <id>enforcer-verification</id>
+            <!--
+              Invocation is defined by the release plugin goal set hence no executions
+            -->
+            <configuration>
+              <rules>
+                <requireReleaseDeps>
+                  <message>
+                    No SNAPSHOTs allowed in depedency tree or parents allowed when releasing!
+                  </message>
+                  <failWhenParentIsSnapshot>true</failWhenParentIsSnapshot>
+                  <searchTransitive>true</searchTransitive>
+                </requireReleaseDeps>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
+            <id>enforcer-validation</id>
+            <phase>validate</phase>
+            <configuration>
+              <rules>
+                <!--
+                  Don't allow accidental inclusion of commons logging or log4j
+                -->
+
+                <bannedDependencies>
+                  <message>
+                    Please ensure you exclude all dependencies on logging implementations
+                  </message>
+                  <excludes>
+                    <exclude>commons-logging</exclude>
+                    <exclude>commons-logging-api</exclude>
+                    <exclude>log4j:log4j</exclude>
+                  </excludes>
+                </bannedDependencies>
+                <requireMavenVersion>
+                  <version>[3.3.9,)</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>1.8.0</version>
+                </requireJavaVersion>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <generateBackupPoms>false</generateBackupPoms>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <!-- Make sure eclipse outputs to a different directory otherwise the builders will clash with command line. -->
+      <id>running-in-eclipse</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <properties>
+        <target.dir>target-eclipse</target.dir>
+      </properties>
+    </profile>
+  </profiles>
+
+</project>
