@@ -15,7 +15,7 @@
     <repository>
       <id>sticky-maven</id>
       <name>Releases</name>
-      <url>https://repository.stickysource.com/sticky-maven-upload</url>
+      <url>https://repository.stickysource.com/repository/sticky-maven-upload</url>
     </repository>
   </distributionManagement>
 
