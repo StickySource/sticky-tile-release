@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +14,7 @@
 
   <distributionManagement>
     <repository>
-      <id>sticky-upload-maven</id>
+      <id>sticky-maven-upload</id>
       <name>Releases</name>
       <url>https://repository.stickysource.com/repository/sticky-maven-upload</url>
     </repository>
@@ -141,8 +142,7 @@
             <execution>
               <phase>verify</phase>
               <id>enforcer-verification</id>
-              <!-- Invocation is defined by the release plugin goal set hence 
-                no executions -->
+              <!-- Invocation is defined by the release plugin goal set hence no executions -->
               <configuration>
                 <rules>
                   <requireReleaseDeps>
@@ -161,8 +161,7 @@
               <phase>validate</phase>
               <configuration>
                 <rules>
-                  <!-- Don't allow accidental inclusion of commons logging 
-                    or log4j -->
+                  <!-- Don't allow accidental inclusion of commons logging or log4j -->
 
                   <bannedDependencies>
                     <message>
@@ -200,5 +199,52 @@
     </pluginManagement>
   </build>
 
+  <profiles>
+    <profile>
+      <id>sign-release-artifacts</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>promote-to-central</id>
+      <distributionManagement>
+        <repository>
+          <uniqueVersion>false</uniqueVersion>
+          <name>Sonatype Oss Staging</name>
+          <id>sonatype-nexus-staging</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+          <uniqueVersion>true</uniqueVersion>
+          <name>Sonatype Oss Snapshots</name>
+          <id>sonatype-nexus-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 </project>
 
