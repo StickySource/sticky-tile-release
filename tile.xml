@@ -173,6 +173,35 @@
           <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
       </distributionManagement>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.4.1</version>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <id>tile-profile</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <requireReleaseDeps>
+                      <message>
+                        No SNAPSHOTs allowed in depedency tree or parents allowed when releasing!
+                      </message>
+                      <failWhenParentIsSnapshot>true</failWhenParentIsSnapshot>
+                      <searchTransitive>true</searchTransitive>
+                    </requireReleaseDeps>
+                  </rules>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 
