@@ -154,6 +154,12 @@
 
     <profile>
       <id>promote-to-central</id>
+      <activation>
+        <property>
+          <name>promoteTo</name>
+          <value>central</value>
+        </property>
+      </activation>
       <distributionManagement>
         <repository>
           <uniqueVersion>false</uniqueVersion>
