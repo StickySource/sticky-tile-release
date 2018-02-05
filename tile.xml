@@ -25,7 +25,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
         <configuration>
-          <preparationGoals>clean validate bounds:update verify</preparationGoals>
+          <preparationGoals>clean validate bounds:update javadoc:javadoc verify</preparationGoals>
           <goals>validate deploy</goals>
           <suppressCommitBeforeTag>false</suppressCommitBeforeTag>
           <localCheckout>true</localCheckout>
