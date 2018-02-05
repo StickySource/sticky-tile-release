@@ -2,7 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-
+ <parent>
+    <groupId>net.stickycode.parent</groupId>
+    <artifactId>sticky-parent-distribution8</artifactId>
+    <version>2.3</version>
+  </parent>
   <groupId>net.stickycode.tile</groupId>
   <artifactId>sticky-tile-release</artifactId>
   <version>1.14-SNAPSHOT</version>
@@ -12,26 +16,8 @@
   <description>Tile for configuring the release process for projects</description>
   <url>https://github.com/StickySource/sticky-tile-release</url>
 
-  <distributionManagement>
-    <repository>
-      <id>sticky-maven-upload</id>
-      <name>Releases</name>
-      <url>https://repository.stickysource.com/repository/sticky-maven-upload</url>
-    </repository>
-  </distributionManagement>
-
-  <properties>
-    <git.base.url>scm:git:git@github.com</git.base.url>
-    <git.branchout.name>StickySource</git.branchout.name>
-    <git.url>${git.base.url}:${git.branchout.name}/${project.artifactId}.git</git.url>
-    <project.build.sourceEncoding>US-ASCII</project.build.sourceEncoding>
-    <target.dir>target</target.dir>
-    <output.basedir>${basedir}</output.basedir>
-  </properties>
-
   <scm>
     <connection>${git.url}</connection>
-    <developerConnection>${git.url}</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
