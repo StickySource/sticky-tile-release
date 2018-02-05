@@ -10,6 +10,7 @@
 
   <name>sticky-tile-release-1</name>
   <description>Tile for configuring the release process for projects</description>
+  <url>https://github.com/StickySource/sticky-tile-release</url>
 
   <distributionManagement>
     <repository>
