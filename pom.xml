@@ -12,12 +12,6 @@
   <description>Tile for configuring the release process for projects</description>
   <url>https://github.com/StickySource/sticky-tile-release</url>
 
-  <scm>
-    <connection>${git.url}</connection>
-    <developerConnection>${git.url}</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -34,6 +28,29 @@
     <target.dir>target</target.dir>
     <output.basedir>${basedir}</output.basedir>
   </properties>
+
+  <scm>
+    <connection>${git.url}</connection>
+    <developerConnection>${git.url}</developerConnection>
+    <tag>HEAD</tag>
+    <url>${git.url}</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <email>michael@StickyCode.net</email>
+      <id>michael@StickyCode.net</id>
+      <name>Michael McCallum</name>
+      <roles>
+        <role>founder</role>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <organization>Red Engine Ltd</organization>
+      <organizationUrl>http://www.RedEngine.co.nz</organizationUrl>
+      <timezone>+12</timezone>
+    </developer>
+  </developers>
 
   <build>
     <directory>${output.basedir}/${target.dir}</directory>
